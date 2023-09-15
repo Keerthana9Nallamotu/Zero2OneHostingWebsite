@@ -59,6 +59,11 @@ def marketing_director():
 def contact():
     return render_template('contact.html')
 
+@app.route('/register.html', methods = ['GET', 'POST'])
+def register():
+    return render_template('register.html')
+
+
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='5000')
 
