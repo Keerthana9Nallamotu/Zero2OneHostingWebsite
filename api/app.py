@@ -42,8 +42,9 @@ def login():
 
         with db.connect() as conn:
              
-            select_statement = "SELECT email_address, activation_date FROM users WHERE email_address = %s AND user_password = %s"
-            results = conn.execute(select_statement, (email, password))
+            select_statement = "SELECT email_address, activation_date FROM users WHERE email_address = :email_address AND user_password = :user_password"
+            values = {'email_address': email, 'user_password': password}
+            results = conn.execute(text(select_statement), values)
 
             for account in results:
                 print('DB Results:',account)
@@ -92,13 +93,13 @@ def register():
         with db.connect() as conn:
 
             select_statement = "SELECT * FROM users WHERE email_address = :email"
-            values = {'email': email}
+            values = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
             results = conn.execute(text(select_statement), values)
 
             print(results)
 
-            insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            conn.execute(insert_statement, (email, password, firstname, lastname, today_date, role_type, email))
+            insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
+            conn.execute(text(insert_statement), values)
 
             session['loggedin'] = True
             # session['id'] = username
