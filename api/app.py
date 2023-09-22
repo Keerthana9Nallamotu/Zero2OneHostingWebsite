@@ -102,8 +102,6 @@ def register():
             values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
             conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
 
-            db.engine.execute('COMMIT;')
-
             session['loggedin'] = True
             # session['id'] = username
             session['email_address'] = email
