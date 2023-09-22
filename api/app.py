@@ -93,13 +93,14 @@ def register():
         with db.connect() as conn:
 
             select_statement = "SELECT * FROM users WHERE email_address = :email"
-            values = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
-            results = conn.execute(text(select_statement), values)
+            values1 = {'email_address': email}
+            results = conn.execute(text(select_statement), values1)
 
             print(results)
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
-            conn.execute(text(insert_statement), values)
+            values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
+            conn.execute(text(insert_statement), values2)
 
             session['loggedin'] = True
             # session['id'] = username
