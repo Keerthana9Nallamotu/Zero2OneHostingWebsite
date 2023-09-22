@@ -91,7 +91,7 @@ def register():
 
         with db.connect() as conn:
 
-            select_statement = f"SELECT * FROM users WHERE email_address = {email}"
+            select_statement = f"SELECT * FROM users WHERE email_address = '{email}'"
             results = conn.execute(text(select_statement))
 
             print(results)
