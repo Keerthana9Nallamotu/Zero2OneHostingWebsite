@@ -12,7 +12,7 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# # db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
+# db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb")
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -93,7 +93,7 @@ def register():
         with db.connect() as conn:
 
             select_statement = "SELECT * FROM users WHERE email_address = :email"
-            values1 = {'email_address': email}
+            values1 = {'email': email}
             results = conn.execute(text(select_statement), values1)
 
             print(results)
