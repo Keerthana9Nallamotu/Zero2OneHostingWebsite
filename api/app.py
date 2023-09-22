@@ -100,7 +100,9 @@ def register():
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
             values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
-            conn.execute(text(insert_statement), values2)
+            conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
+
+            db.engine.execute('COMMIT;')
 
             session['loggedin'] = True
             # session['id'] = username
