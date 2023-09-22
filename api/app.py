@@ -4,19 +4,16 @@ from dateutil import parser
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc
 import sqlalchemy
-# from flaskext.mysql import MySQL
 import os
 
 app = Flask(__name__)
 
-# mysql = MySQL()
-# mysql.init_app(app)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
-db = create_engine("postgres://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb")
+# # db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
+# db = create_engine("postgres://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb")
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
