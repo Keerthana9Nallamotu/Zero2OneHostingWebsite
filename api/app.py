@@ -2,7 +2,7 @@ from flask import Flask, render_template, session, redirect, url_for, request
 from datetime import datetime, timedelta
 from dateutil import parser
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine, exc
+from sqlalchemy import create_engine, exc, text
 import sqlalchemy
 import os
 
@@ -91,8 +91,8 @@ def register():
 
         with db.connect() as conn:
 
-            select_statement = "SELECT * FROM users WHERE email_address = %s"
-            results = conn.execute(select_statement, (email))
+            select_statement = f"SELECT * FROM users WHERE email_address = {email}"
+            results = conn.execute(text(select_statement))
 
             print(results)
 
