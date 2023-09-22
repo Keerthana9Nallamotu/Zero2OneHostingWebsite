@@ -4,13 +4,13 @@ from dateutil import parser
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc
 import sqlalchemy
-from flaskext.mysql import MySQL
+# from flaskext.mysql import MySQL
 import os
 
 app = Flask(__name__)
 
-mysql = MySQL()
-mysql.init_app(app)
+# mysql = MySQL()
+# mysql.init_app(app)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
