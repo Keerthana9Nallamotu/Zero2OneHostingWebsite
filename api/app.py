@@ -12,7 +12,7 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-# db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
+# db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -86,7 +86,7 @@ def register():
         if password!=passwordrep:
             msg = "Passwords don't match!"
             print(f"pass: {password} | passrep: {passwordrep}")
-            return render_template('login.html', msg=msg)
+            return render_template('register.html', msg=msg)
         
         print(f"pass: {password} | passrep: {passwordrep}")
 
@@ -97,6 +97,10 @@ def register():
             results = conn.execute(text(select_statement), values1)
 
             print(results)
+
+            for account in results:
+                msg = "Email already registered!"
+                return render_template('register.html', msg=msg)
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
             values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
