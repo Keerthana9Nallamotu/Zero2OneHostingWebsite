@@ -17,7 +17,7 @@ db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
-CORRECT_WEEKLY_CODE = "TEST_CODE"
+CORRECT_WEEKLY_CODE = "Siebel"
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
@@ -32,8 +32,8 @@ def home():
 def dashboard():
     # TODO REDIRECT TO LOGIN IF SESSION = FALSE
 
-    if not session or (session and not session["loggedin"]):
-        return redirect(url_for('register'))
+    # if not session or (session and not session["loggedin"]):
+    #     return redirect(url_for('register'))
 
     if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
         code = request.form['code']
