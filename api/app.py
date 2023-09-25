@@ -15,14 +15,62 @@ app.config['SECRET_KEY'] = SECRET_KEY
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
+#TODO: REPLACE HARDCODING
+WEEK_NUM = 1
+CORRECT_WEEKLY_CODE = "TEST_CODE"
+
 @app.route('/', methods = ['GET', 'POST'])
 def home():
+    #TODO: REPLACE WITH LISTS
+    session['ATTENDANCE_SUBMITTED'] = False
+    session['ASSIGNMENT_SUBMITTED'] = False
+
     session['loggedin'] = False
     return render_template('index.html')
 
 @app.route('/dashboard.html', methods = ['GET', 'POST'])
 def dashboard():
-    return render_template('dashboard.html')
+    # TODO REDIRECT TO LOGIN IF SESSION = FALSE
+
+    if not session or (session and not session["loggedin"]):
+        return redirect(url_for('register'))
+
+    if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
+        code = request.form['code']
+        workshop_num = request.form['workshop_num']
+
+        if code != CORRECT_WEEKLY_CODE:
+            msg = "Incorrect Code Inputted - Please Try Again"
+            #TODO ERROR HANDLING
+            return render_template('dashboard.html', msg=msg)
+        
+        with db.connect() as conn:
+
+            #TODO MAKE WORKSHOP NUMBER A VAR
+            update_statement = "UPDATE attendance SET Workshop_1 = :update_num WHERE email_address = :email_address;"
+            values = {'update_num': "1", 'email_address': session['email_address']}
+            
+            print(f"UPDATE: {update_statement}")
+            conn.execute(text(update_statement), values)
+
+            session['ATTENDANCE_SUBMITTED'] = True
+
+            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
+        
+    elif request.method == 'POST' and 'worksheet_link' in request.form:
+        worksheet_link = request.form['worksheet_link']
+        
+        with db.connect() as conn:
+            update_statement = "UPDATE assignments SET Workshop_1 = :worksheet_link WHERE email_address = :email_address;"
+            values = {'worksheet_link': worksheet_link,'email_address': session['email_address']}
+            conn.execute(text(update_statement), values)
+
+            session['ASSIGNMENT_SUBMITTED'] = True
+            session['ASSIGNMENT_LINK'] = worksheet_link
+
+            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
+
+    return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
 
 @app.route('/login.html', methods = ['GET', 'POST'])
 def login():
@@ -44,6 +92,7 @@ def login():
              
             select_statement = "SELECT email_address, activation_date FROM users WHERE email_address = :email_address AND user_password = :user_password"
             values = {'email_address': email, 'user_password': password}
+
             results = conn.execute(text(select_statement), values)
 
             for account in results:
@@ -106,9 +155,23 @@ def register():
             values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
             conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
 
+            insert_statement2 = "INSERT INTO attendance(email_address, Workshop_1, Workshop_2, Workshop_3, Workshop_4, Workshop_5, Workshop_6, Workshop_7, Workshop_8) VALUES (:email_address, :Workshop_1, :Workshop_2, :Workshop_3, :Workshop_4, :Workshop_5, :Workshop_6, :Workshop_7, :Workshop_8)"
+            values3 = {'email_address': email, 'Workshop_1': '0', 'Workshop_2': '0', 'Workshop_3': '0', 'Workshop_4': '0', 'Workshop_5': '0', 'Workshop_6': '0', 'Workshop_7': '0', 'Workshop_8': '0'}
+            conn.execute(text(insert_statement2).execution_options(autocommit=True), values3)
+
+            insert_statement3 = "INSERT INTO assignments(email_address, Workshop_1, Workshop_2, Workshop_3, Workshop_4, Workshop_5, Workshop_6, Workshop_7, Workshop_8) VALUES (:email_address, :Workshop_1, :Workshop_2, :Workshop_3, :Workshop_4, :Workshop_5, :Workshop_6, :Workshop_7, :Workshop_8)"
+            values4 = {'email_address': email, 'Workshop_1': "", 'Workshop_2': "", 'Workshop_3': "", 'Workshop_4': "", 'Workshop_5': "", 'Workshop_6': "", 'Workshop_7': "", 'Workshop_8': ""}
+            conn.execute(text(insert_statement3).execution_options(autocommit=True), values4)
+
             session['loggedin'] = True
             # session['id'] = username
             session['email_address'] = email
+
+            #TODO: REPLACE WITH LISTS
+            session['ATTENDANCE_SUBMITTED'] = False
+            session['ASSIGNMENT_SUBMITTED'] = False
+            session['ASSIGNMENT_LINK'] = ""
+
             print(email)
                             
             return redirect(url_for('dashboard'))

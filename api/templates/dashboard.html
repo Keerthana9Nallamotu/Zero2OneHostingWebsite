@@ -4,71 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task Management Dashboard UI</title>
+    <title>Zero2One Dashboard</title>
     <link rel="stylesheet" href="../static/css/dash.css" />
   </head>
   <body>
     <div class="task-manager">
-      <!-- left bar starts -->
-      <div class="left-bar">
-        <div class="upper-part">
-          <div class="actions">
-            <div class="circle-2"></div>
-          </div>
-        </div>
-
-        <!-- left content starts -->
-        <div class="left-content">
-          <ul class="action-list">
-            <li class="item">
-              <img class="feather feather-inbox" src="../static/img/inbox.svg" alt="" />
-              <span>Inbox</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-star" src="../static/img/star.svg" alt="" />
-              <span> Today</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-calendar" src="../static/img/calender.svg" alt="" />
-              <span>Upcoming</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-hash" src="../static/img/hash.svg" alt="" />
-              <span>Important</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-users" src="../static/img/users.svg" alt="" />
-              <span>Meetings</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-trash" src="../static/img/trash.svg" alt="" />
-              <span>Trash</span>
-            </li>
-          </ul>
-
-          <ul class="category-list">
-            <li class="item">
-              <img class="feather feather-users" src="../static/img/users.svg" alt="" />
-              <span>Family</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-sun" src="../static/img/sun.svg" alt="" />
-              <span>Vacation</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-trending-up" src="../static/img/trending.svg" alt="" />
-              <span>Festival</span>
-            </li>
-            <li class="item">
-              <img class="feather feather-zap" src="../static/img/zap.svg" alt="" />
-              <span>Concerts</span>
-            </li>
-          </ul>
-        </div>
-        <!-- left content ends -->
-      </div>
-      <!--  -->
-      <!-- left bar ends -->
 
       <!-- page content starts -->
       <div class="page-content">
@@ -76,97 +16,117 @@
         <!-- contnet categories starts -->
         <div class="content-categories">
           <div class="label-wrapper">
-            <input class="nav-item" name="nav" type="radio" id="opt-1" />
-            <label class="category" for="opt-1">All</label>
+            <input class="nav-item" name="nav" type="radio" id="opt-1" data-for-tab="1">
+            <label class="category" for="opt-1">Attendance</label>
           </div>
-          <div class="label-wrapper">
-            <input class="nav-item" name="nav" type="radio" id="opt-2" checked />
-            <label class="category" for="opt-2">Important</label>
-          </div>
-          <div class="label-wrapper">
-            <input class="nav-item" name="nav" type="radio" id="opt-3" />
-            <label class="category" for="opt-3">Assignments</label>
-          </div>
-          <div class="label-wrapper">
-            <input class="nav-item" name="nav" type="radio" id="opt-4" />
-            <label class="category" for="opt-4">Zoom Links</label>
-          </div>
+          <!-- <div class="label-wrapper">
+            <input class="nav-item" name="nav" type="radio" id="opt-2" data-for-tab="1" />
+            <label class="category" for="opt-2">Assignments</label>
+          </div> -->
         </div>
         <!--  -->
         <!-- contemt categories ends -->
+
+        <!-- <div class="tabs">
+          <div class="tabs__sidebar">
+            <button class="tabs__button" data-for-tab="1">Attendance</button>
+            <button class="tabs__button" data-for-tab="2">Assignments</button>
+          </div>
+        </div> -->
+
+        <!-- <div class="tabs__content" data-tab="1"> -->
+          <form class="user" action="{{ url_for('dashboard') }}" method="post">
+            
+            <hr color="white">
+            <div class="form-group row" style="padding-left: 37%;">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <input style="align-self: center;" type="text" name = "code" class="text-input" id="attendance_code" placeholder="Weekly Code" required>
+                </div>
+            </div>
+
+            <div class="form-group" style="padding-left: 35%;">
+            <hr color="white">
+            <div class="col-sm-6">
+              <input type="radio" value="1" id="1" name="workshop_num">
+              <label for="1">Workshop 1: Ideation & Team Formation</label><br>
+
+              <hr color="white">
+
+              <input type="radio" value="2" id="2" name="workshop_num">
+              <label for="2">Workshop 2: Problem Statements</label><br>
+
+              <hr color="white">
+
+              <input type="radio" value="3" id="3" name="workshop_num">
+              <label for="3">Workshop 3: Pain Points & Stakeholders</label>
+
+              <hr color="white">
+
+              <input type="radio" value="4" id="4" name="workshop_num">
+              <label for="4">Workshop 4: Customer Validation & Target Market Analysis</label>
+
+              <hr color="white">
+
+              <input type="radio" value="5" id="5" name="workshop_num">
+              <label for="5">Workshop 5: Prototyping</label>
+
+              <hr color="white">
+              
+              <input type="radio" value="6" id="6" name="workshop_num">
+              <label for="6">Workshop 6: KPIs & Business Models</label>
+
+              <hr color="white">
+
+              <input type="radio" value="7" id="7" name="workshop_num">
+              <label for="7">Workshop 7: Pitching</label>
+
+              <hr color="white">
+              <input type="radio" value="8" id="8" name="workshop_num">
+              <label for="8">Workshop 8: Demo Day Prep</label>
+              <hr color="white">
+
+              <div style="padding-left: 9%;padding-top: 2%;">
+                <input type="submit" class = "btn" value="Confirm Attendance">
+              </div>
+              </div>
+            </div>
+            
+
+        </form>
+
+        <div class="msg" style="padding-top: 10px;color:red;text-align:center;font-family:sans-serif;font-size: 1rem;">{{ msg }}</div>
+        
+      <!-- </div> -->
+
+      <div class="content-categories">
+        <div class="label-wrapper">
+          <input class="nav-item" name="nav" type="radio" id="opt-2" data-for-tab="1">
+          <label class="category" for="opt-1">Assignments</label>
+        </div>
+      </div>
+
+      <form class="user1" action="{{ url_for('dashboard') }}" method="post">
+            
+        <hr color="white">
+        <div class="form-group row" style="padding-left: 37%;padding-top: 1%;">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input style="align-self: center;" type="text" name = "worksheet_link" class="text-input" id="worksheet_link" placeholder="Week {{week_num}} Worksheet Google Drive Link" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-left: 35%;">
+
+          <div style="padding-left: 9%;padding-top: 3%;">
+            <input type="submit" class = "btn" value="Submit Link">
+          </div>
+        </div>
+        
+
+      </form>
+
         <!-- tasks wrapper starts -->
         <div class="tasks-wrapper">
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-1" checked />
-            <label for="item-1">
-              <span class="label-text">Dashboard Design Implementation</span>
-            </label>
-            <span class="tag approved">Approved</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-2" checked />
-            <label for="item-2">
-              <span class="label-text">Create a userflow</span>
-            </label>
-            <span class="tag progress">In Progress</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-3" />
-            <label for="item-3">
-              <span class="label-text">Application Implementation</span>
-            </label>
-            <span class="tag review">In Review</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-4" />
-            <label for="item-4">
-              <span class="label-text">Create a Dashboard Design</span>
-            </label>
-            <span class="tag progress">In Progress</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-5" />
-            <label for="item-5">
-              <span class="label-text">Create a Web Application Design</span>
-            </label>
-            <span class="tag approved">Approved</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-6" />
-            <label for="item-6">
-              <span class="label-text">Interactive Design</span>
-            </label>
-            <span class="tag review">In Review</span>
-          </div>
-          <div class="header upcoming">Upcoming Tasks</div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-7" />
-            <label for="item-7">
-              <span class="label-text">Dashboard Design Implementation</span>
-            </label>
-            <span class="tag waiting">Waiting</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-8" />
-            <label for="item-8">
-              <span class="label-text">Create a userflow</span>
-            </label>
-            <span class="tag waiting">Waiting</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-9" />
-            <label for="item-9">
-              <span class="label-text">Application Implementation</span>
-            </label>
-            <span class="tag waiting">Waiting</span>
-          </div>
-          <div class="task">
-            <input class="task-item" name="task" type="checkbox" id="item-10" />
-            <label for="item-10">
-              <span class="label-text">Create a Dashboard Design</span>
-            </label>
-            <span class="tag waiting">Waiting</span>
-          </div>
+          
         </div>
         <!-- tasks wrapper ends -->
       </div>
@@ -176,25 +136,25 @@
       <!-- right bar starts -->
       <div class="right-bar">
         <div class="top-part">
-          <img class="feather feather-users" src="../static/img/users.svg" alt="" />
-          <div class="count">6</div>
+          <!-- <img class="feather feather-users" src="../static/img/users.svg" alt="" /> -->
+          <!-- <div class="count">6</div> -->
         </div>
-        <div class="header">Timeline</div>
+        <div class="header">Slides</div>
         <div class="right-content">
-          <div class="task-box yellow">
-            <div class="description-task">
-              <div class="time">08:00 - 09:00 AM</div>
-              <div class="task-name">Dev Review</div>
+          {% if att_sub %}  
+            <div class="task-box yellow">
+              <div class="description-task">
+                <div class="time">06:00 - 08:00 PM</div>
+                <div class="task-name">Workshop 1: Ideation & Team Formation</div>
+                <a href="https://www.canva.com/design/DAFvH8PF-_0/__Lknv9AkKyDUUgxFnjphg/edit?utm_content=DAFvH8PF-_0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton" target="_blank" style="padding-top: 5px;">Slides Link</a>
+                {% if assign_sub %}  
+                  <a href={{assign_link}} target="_blank">Worksheet Submission</a>
+                {% endif %}
+              </div>
+              <!-- <div class="more-button"></div> -->
             </div>
-            <div class="more-button"></div>
-            <div class="members">
-              <img src="../static/img/img1.jpg" alt="member" />
-              <img src="../static/img/img2.jpg" alt="member-2" />
-              <img src="../static/img/img3.jpg" alt="member-3" />
-              <img src="../static/img/img4.jpg" alt="member-4" />
-            </div>
-          </div>
-          <div class="task-box blue">
+          {% endif %}
+          <!-- <div class="task-box blue">
             <div class="description-task">
               <div class="time">10:00 - 11:00 AM</div>
               <div class="task-name">Outreach Meeting</div>
@@ -259,11 +219,43 @@
               <img src="../static/img/img3.jpg" alt="member-3" />
               <img src="../static/img/img4.jpg" alt="member-4" />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
       <!-- right bar ends -->
     </div>
+
+    <script>
+      function setupTabs() {
+        document.querySelectorAll(".tabs__button").forEach(button => {
+          button.addEventListener("click", () => {
+            const sideBar = button.parentElement;
+            const tabsContainer = sideBar.parentElement;
+            const tabNumber = button.dataset.forTab;
+            const tabToActivate = tabsContainer.querySelector('.tabs__content[data-tab="${tabNumber}"]');
+
+            sideBar.querySelectorAll(".tabs__button").forEach(button => {
+              button.classList.remove("tabs__button--active");
+            });
+
+            tabsContainer.querySelectorAll(".tabs__content").forEach(tab => {
+              tab.classList.remove("tabs__content--active");
+            });
+
+            button.classList.add("tabs__button--active");
+            tab.classList.add("tabs__content--active");
+          });
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        setupTabs();
+
+        document.querySelectorAll(".tabs").forEach(tabsContainer => {
+          tabsContainer.querySelector(".tabs__sidebar .tabs__button").click();
+        });
+      });
+    </script>
   </body>
   
 </html>

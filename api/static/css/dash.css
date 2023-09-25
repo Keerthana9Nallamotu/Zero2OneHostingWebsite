@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
 
 * {
-  box-sizing: border-box;
   outline: none;
 }
 :root {
@@ -62,13 +61,9 @@ ul {
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
-  height: 90vh;
-  max-height: 900px;
+  height: 110vh;
+  max-height: 1100px;
   background: #fff;
-  border-radius: 4px;
-  box-shadow: 0 0.3px 2.2px rgba(0, 0, 0, 0.011), 0 0.7px 5.3px rgba(0, 0, 0, 0.016),
-    0 1.3px 10px rgba(0, 0, 0, 0.02), 0 2.2px 17.9px rgba(0, 0, 0, 0.024),
-    0 4.2px 33.4px rgba(0, 0, 0, 0.029), 0 10px 80px rgba(0, 0, 0, 0.04);
   overflow: hidden;
 }
 
@@ -149,19 +144,25 @@ ul {
 
 .category {
   font-weight: 500;
-  color: var(--secondary-color);
+  /* color: var(--secondary-color); */
   border-bottom: 1px solid #ddd;
   transition: 0.4s ease-in;
   padding: 20px 30px;
   cursor: pointer;
 }
 
-#opt-1:checked + label,
+/* #opt-1:checked + label,
 #opt-2:checked + label,
 #opt-3:checked + label,
 #opt-4:checked + label {
   color: var(--checkbox-color);
   border-bottom: 2px solid var(--checkbox-color);
+} */
+
+#opt-1,
+#opt-2 {
+  color: #009e90;
+  border-bottom: 2px solid #009e90;
 }
 
 /*  */
@@ -380,4 +381,71 @@ body,
   .category {
     padding: 20px;
   }
+}
+
+.tabs{
+  border: 1px solid #cccccc;
+  display: flex;
+}
+
+.tabs__sidebar{
+  width: 125px;
+  flex-shrink: 0;
+  background: #cccccc;
+}
+
+.tabs__button{
+  display: block;
+  padding: 10px;
+  background: #eeeeee;
+  border: none;
+  width: 100%;
+}
+
+.tabs__button:active {
+  background: #dddddd;
+}
+
+.tabs__button:not(:last-of-type) {
+  border-bottom: 1px solid #cccccc;
+}
+
+.tabs__button:active {
+  font-weight: bold;
+  border-right: 2px solid #009e90;
+  background: #dddddd;
+}
+
+.tabs__content {
+  padding: 15px;
+  font-size: 0.8rem;
+  display: none;
+}
+
+.tabs__content--active {
+  display: block;
+}
+
+.text-input {
+    border-radius: 15px;
+    border: 2px solid #353536;
+    padding: 10px; 
+    width: 200px;
+    height: 15px;    
+}
+
+.btn{
+  width: 150px;
+    height: 20px;
+    border: #00f1d9c9;
+    /* outline: black; */
+    background: #00ffe1c9;
+    color: black;
+    font-size: 12px;
+    border-radius: 40px;
+    text-align: center;
+    box-shadow: 0 6px 20px -5px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
 }
