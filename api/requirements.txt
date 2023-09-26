@@ -8,3 +8,4 @@ Flask-SQLAlchemy==2.5.1
 Flask-WTF==1.0.0
 Flask-MySQL==1.5.2
 psycopg2-binary~=2.9.3
+Flask-Bcrypt==1.0.1
