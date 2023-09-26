@@ -9,11 +9,13 @@ import os
 
 app = Flask(__name__)
 
+bcrypt = Bcrypt(app)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
+
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 #TODO: REPLACE HARDCODING
@@ -154,6 +156,7 @@ def register():
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
             values2 = {'email_address': email, 'user_password': bcrypt.generate_password_hash(password), 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
+
             conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
 
             insert_statement2 = "INSERT INTO attendance(email_address, Workshop_1, Workshop_2, Workshop_3, Workshop_4, Workshop_5, Workshop_6, Workshop_7, Workshop_8) VALUES (:email_address, :Workshop_1, :Workshop_2, :Workshop_3, :Workshop_4, :Workshop_5, :Workshop_6, :Workshop_7, :Workshop_8)"
