@@ -1,4 +1,5 @@
 from flask import Flask, render_template, session, redirect, url_for, request
+from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 from dateutil import parser
 from flask_sqlalchemy import SQLAlchemy
@@ -152,7 +153,7 @@ def register():
                 return render_template('register.html', msg=msg)
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
-            values2 = {'email_address': email, 'user_password': password, 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
+            values2 = {'email_address': email, 'user_password': bcrypt.generate_password_hash(password), 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
             conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
 
             insert_statement2 = "INSERT INTO attendance(email_address, Workshop_1, Workshop_2, Workshop_3, Workshop_4, Workshop_5, Workshop_6, Workshop_7, Workshop_8) VALUES (:email_address, :Workshop_1, :Workshop_2, :Workshop_3, :Workshop_4, :Workshop_5, :Workshop_6, :Workshop_7, :Workshop_8)"
