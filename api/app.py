@@ -35,8 +35,10 @@ def home():
 def dashboard():
     # TODO REDIRECT TO LOGIN IF SESSION = FALSE
 
-    if not session or (session and not session["loggedin"]) or (session and not session["ATTENDANCE_SUBMITTED"]) or (session and not session["ASSIGNMENT_SUBMITTED"]) or (session and not session["ASSIGNMENT_LINK"]) or (session and not session["email_address"]):
-        return redirect(url_for('register'))
+    # if not session or (session and not session["loggedin"]):
+    #     if not session:
+
+    #     return redirect(url_for('register'))
 
     if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
         code = request.form['code']
