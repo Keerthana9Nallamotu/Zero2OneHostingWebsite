@@ -95,25 +95,30 @@ def login():
 
         with db.connect() as conn:
              
-            select_statement = "SELECT email_address, activation_date FROM users WHERE email_address = :email_address AND user_password = :user_password"
-            values = {'email_address': email, 'user_password': password}
+            select_statement = "SELECT email_address, activation_date, User_password FROM users WHERE email_address = :email_address"
+            values = {'email_address': email}
 
             results = conn.execute(text(select_statement), values)
 
-            for account in results:
-                print('DB Results:',account)
-                if account:
-                    print('parse: ', parser.parse(account['activation_date']))
 
-                    session['loggedin'] = True
-                    # session['id'] = account['username']
-                    session['email_address'] = account['email_address']
-                       
-                    return redirect(url_for('dashboard'))
+            for account in results:
+                print('DB Results:',account[2])
+                if account:
+                    print(account)
+                    if bcrypt.generate_password_hash(password) == account[2]:
+                        print('parse: ', parser.parse(account['activation_date']))
+
+                        session['loggedin'] = True
+                        # session['id'] = account['username']
+                        session['email_address'] = account['email_address']
+                        
+                        return redirect(url_for('dashboard'))
                 else:
                     msg = 'Incorrect username/password!'
+                    print(msg)
                     return render_template('login.html', msg=msg)
-                    
+    else:
+        print("Not entering funct")          
     return render_template('login.html', msg=msg)
 
 
@@ -136,6 +141,13 @@ def register():
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         role_type = request.form['role']
+
+        print(email)
+        print(password)
+        print(passwordrep)
+        print(firstname)
+        print(lastname)
+        print(role_type)
 
         if password!=passwordrep:
             msg = "Passwords don't match!"
