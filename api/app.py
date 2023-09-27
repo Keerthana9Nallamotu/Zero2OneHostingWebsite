@@ -15,7 +15,6 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
-db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
 
 # db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
