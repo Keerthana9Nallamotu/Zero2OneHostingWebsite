@@ -124,6 +124,48 @@
 
       </form>
 
+      <div class="content-categories">
+        <div class="label-wrapper">
+          <input class="nav-item" name="nav" type="radio" id="opt-2" data-for-tab="1">
+          <label class="category" for="opt-1">Team Matching</label>
+        </div>
+      </div>
+
+      <form class="user3" action="{{ url_for('dashboard') }}" method="post">
+        <hr color="white">
+        <div class="form-group row" style="padding-left: 37%;padding-top: 1%;">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input style="align-self: center;" type="text" name = "worksheet_link" class="text-input" id="worksheet_link" placeholder="New Group Code" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-left: 35%;">
+
+          <div style="padding-left: 9%;padding-top: 3%;">
+            <input type="submit" class = "btn" value="Submit Link">
+          </div>
+        </div>
+      </form>
+
+      <form class="user4" action="{{ url_for('dashboard') }}" method="post">
+            
+        <hr color="white">
+        <div class="form-group row" style="padding-left: 37%;padding-top: 1%;">
+            <div class="col-sm-6 mb-3 mb-sm-0">
+                <input style="align-self: center;" type="text" name = "worksheet_link" class="text-input" id="worksheet_link" placeholder="Existing Group Code" required>
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-left: 35%;">
+
+          <div style="padding-left: 9%;padding-top: 3%;">
+            <input type="submit" class = "btn" value="Submit Link">
+          </div>
+        </div>
+        
+
+      </form>
+
         <!-- tasks wrapper starts -->
         <div class="tasks-wrapper">
           
@@ -141,19 +183,20 @@
         </div>
         <div class="header">Slides</div>
         <div class="right-content">
-          {% if att_sub %}  
+            
             <div class="task-box yellow">
               <div class="description-task">
                 <div class="time">06:00 - 08:00 PM</div>
                 <div class="task-name">Workshop 1: Ideation & Team Formation</div>
+                {% if att_sub %}
                 <a href="https://docs.google.com/presentation/d/16pP2CA9J9_mo1p6VuprAlj1T_BM1EJjIa2S2nKOt9ZY/edit?usp=sharing" target="_blank" style="padding-top: 5px;">Slides Link</a>
+                {% endif %}
                 {% if assign_sub %}  
                   <a href={{assign_link}} target="_blank">Worksheet Submission</a>
                 {% endif %}
               </div>
               <!-- <div class="more-button"></div> -->
             </div>
-          {% endif %}
           <!-- <div class="task-box blue">
             <div class="description-task">
               <div class="time">10:00 - 11:00 AM</div>

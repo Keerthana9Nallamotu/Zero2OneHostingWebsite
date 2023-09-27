@@ -15,8 +15,9 @@ SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
+db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
 
-db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
+# db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
@@ -100,17 +101,22 @@ def login():
 
             results = conn.execute(text(select_statement), values)
 
-
             for account in results:
-                print('DB Results:',account[2])
+                print('DB Results:',account['User_password'])
+                print('HASHED: ', str(bcrypt.generate_password_hash(password))[1:])
                 if account:
                     print(account)
-                    if bcrypt.generate_password_hash(password) == account[2]:
+                    if bcrypt.check_password_hash(account['User_password'], password):
                         print('parse: ', parser.parse(account['activation_date']))
 
                         session['loggedin'] = True
                         # session['id'] = account['username']
                         session['email_address'] = account['email_address']
+
+                        #TODO: REPLACE WITH LISTS
+                        session['ATTENDANCE_SUBMITTED'] = False
+                        session['ASSIGNMENT_SUBMITTED'] = False
+                        session['ASSIGNMENT_LINK'] = ""
                         
                         return redirect(url_for('dashboard'))
                 else:
@@ -169,7 +175,7 @@ def register():
                 return render_template('register.html', msg=msg)
 
             insert_statement = "INSERT INTO users(email_address, user_password, first_name, last_name, activation_date, role_id, team_id) VALUES (:email_address, :user_password, :first_name, :last_name, :activation_date, :role_id, :team_id)"
-            values2 = {'email_address': email, 'user_password': bcrypt.generate_password_hash(password), 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
+            values2 = {'email_address': email, 'user_password': bcrypt.generate_password_hash(password).decode('utf-8'), 'first_name': firstname, 'last_name': lastname, 'activation_date': today_date, 'role_id': role_type, 'team_id': email}
 
             conn.execute(text(insert_statement).execution_options(autocommit=True), values2)
 
