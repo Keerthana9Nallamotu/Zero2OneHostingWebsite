@@ -9,25 +9,28 @@ import os
 from flask_session import Session
 
 app = Flask(__name__)
+
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 bcrypt = Bcrypt(app)
 
-SECRET_KEY = os.urandom(32)
-app.config['SECRET_KEY'] = SECRET_KEY
+
 
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
 
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 
-# session['loggedin'] = False
-# session['email_address'] = ""
-# session['ATTENDANCE_SUBMITTED'] = False
-# session['ASSIGNMENT_SUBMITTED'] = False
-# session['ASSIGNMENT_LINK'] = ""
+session['loggedin'] = False
+session['email_address'] = ""
+session['ATTENDANCE_SUBMITTED'] = False
+session['ASSIGNMENT_SUBMITTED'] = False
+session['ASSIGNMENT_LINK'] = ""
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
@@ -46,10 +49,10 @@ def home():
 def dashboard():
     # TODO REDIRECT TO LOGIN IF SESSION = FALSE
 
-    # if not session or (session and not session["loggedin"]):
-    #     if not session:
-
-    #     return redirect(url_for('register'))
+    if not session or (session and session.get("email_address")==""):
+        # if not session:
+        print("Not logged in")
+        return redirect(url_for('login'))
 
     if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
         code = request.form['code']
@@ -86,6 +89,7 @@ def dashboard():
 
             return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
 
+    print(session.get("email_address"))
     return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
 
 @app.route('/login.html', methods = ['GET', 'POST'])
