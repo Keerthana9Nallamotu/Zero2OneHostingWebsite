@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc, text
 import sqlalchemy
 import os
-from flask_login import current_user
+# from flask_login import current_user
 
 app = Flask(__name__)
 
