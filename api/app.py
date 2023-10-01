@@ -108,7 +108,7 @@ def login():
                 print('HASHED: ', str(bcrypt.generate_password_hash(password))[1:])
                 if account:
                     print(account)
-                    if bcrypt.check_password_hash(password, account[0]):
+                    if bcrypt.check_password_hash(account[0], password):
                         print('parse: ', parser.parse(account[1]))
 
                         session['loggedin'] = True
