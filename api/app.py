@@ -2,29 +2,31 @@ from flask import Flask, render_template, session, redirect, url_for, request
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 from dateutil import parser
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc, text
 import sqlalchemy
 import os
-from flask_session import Session
+# from flask_session import Session
 
 app = Flask(__name__)
 
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
-Session(app)
+# app.config["SESSION_PERMANENT"] = False
+# app.config["SESSION_TYPE"] = "filesystem"
+# app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
+# Session(app)
 
 bcrypt = Bcrypt(app)
 
 
 
 # db = create_engine('mysql+pymysql://root:password@127.0.0.1:3306/zero2onewebsite')
+db = create_engine('mysql+pymysql://root:Clever9SQL#Password@127.0.0.1:3306/zero2onewebsite')
 
-db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
+
+
+# db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 
 # session['loggedin'] = False
@@ -50,6 +52,8 @@ def home():
 def dashboard():
     # TODO REDIRECT TO LOGIN IF SESSION = FALSE
 
+    # print(user)
+
     if not session or (session and session.get("email_address")==""):
         if not session:
             print("Not logged in")
@@ -73,9 +77,9 @@ def dashboard():
             print(f"UPDATE: {update_statement}")
             conn.execute(text(update_statement), values)
 
-            session['ATTENDANCE_SUBMITTED'] = True
+            # session['ATTENDANCE_SUBMITTED'] = True
 
-            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
+            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = False, assign_sub = False, assign_link = False)
         
     elif request.method == 'POST' and 'worksheet_link' in request.form:
         worksheet_link = request.form['worksheet_link']
@@ -85,18 +89,18 @@ def dashboard():
             values = {'worksheet_link': worksheet_link,'email_address': session['email_address']}
             conn.execute(text(update_statement), values)
 
-            session['ASSIGNMENT_SUBMITTED'] = True
-            session['ASSIGNMENT_LINK'] = worksheet_link
+            # session['ASSIGNMENT_SUBMITTED'] = True
+            # session['ASSIGNMENT_LINK'] = worksheet_link
 
-            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
+            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = False, assign_sub = False, assign_link = False)
 
     print(session.get("email_address"))
-    return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = session['ATTENDANCE_SUBMITTED'], assign_sub = session['ASSIGNMENT_SUBMITTED'], assign_link = session['ASSIGNMENT_LINK'])
+    return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = False, assign_sub = False, assign_link = False)
 
 @app.route('/login.html', methods = ['GET', 'POST'])
 def login():
-    if session and session["loggedin"]:
-        return redirect(url_for('dashboard'))
+    # if session and session["loggedin"]:
+    #     return redirect(url_for('dashboard'))
     msg = ''
 
     today_date = datetime.now()
@@ -124,20 +128,20 @@ def login():
                     if bcrypt.check_password_hash(account[2], password):
                         print('parse: ', parser.parse(account[1]))
 
-                        session['loggedin'] = True
+                        # session['loggedin'] = True
                         # session['id'] = account['username']
                         session['email_address'] = account[0]
 
                         #TODO: REPLACE WITH LISTS
-                        session['ATTENDANCE_SUBMITTED'] = False
-                        session['ASSIGNMENT_SUBMITTED'] = False
-                        session['ASSIGNMENT_LINK'] = ""
+                        # session['ATTENDANCE_SUBMITTED'] = False
+                        # session['ASSIGNMENT_SUBMITTED'] = False
+                        # session['ASSIGNMENT_LINK'] = ""
 
-                        print("LOGGEDIN: ", session['loggedin'])
+                        # print("LOGGEDIN: ", session['loggedin'])
                         print("EMAIL: ", session['email_address'])
-                        print("ATT: ", session['ATTENDANCE_SUBMITTED'])
-                        print("ASSIGN: ", session['ASSIGNMENT_SUBMITTED'])
-                        print("LINK: ", session['ASSIGNMENT_LINK'])
+                        # print("ATT: ", session['ATTENDANCE_SUBMITTED'])
+                        # print("ASSIGN: ", session['ASSIGNMENT_SUBMITTED'])
+                        # print("LINK: ", session['ASSIGNMENT_LINK'])
                         
                         return redirect(url_for('dashboard'))
                 else:
@@ -151,8 +155,8 @@ def login():
 
 @app.route('/register.html', methods = ['GET', 'POST'])
 def register():
-    if session and session["loggedin"]:
-        return redirect(url_for('dashboard'))
+    # if session and session["loggedin"]:
+    #     return redirect(url_for('dashboard'))
     
     msg = ''
 
@@ -208,14 +212,14 @@ def register():
             values4 = {'email_address': email, 'Workshop_1': "", 'Workshop_2': "", 'Workshop_3': "", 'Workshop_4': "", 'Workshop_5': "", 'Workshop_6': "", 'Workshop_7': "", 'Workshop_8': ""}
             conn.execute(text(insert_statement3).execution_options(autocommit=True), values4)
 
-            session['loggedin'] = True
+            # session['loggedin'] = True
             # session['id'] = username
             session['email_address'] = email
 
             #TODO: REPLACE WITH LISTS
-            session['ATTENDANCE_SUBMITTED'] = False
-            session['ASSIGNMENT_SUBMITTED'] = False
-            session['ASSIGNMENT_LINK'] = ""
+            # session['ATTENDANCE_SUBMITTED'] = False
+            # session['ASSIGNMENT_SUBMITTED'] = False
+            # session['ASSIGNMENT_LINK'] = ""
 
             print(email)
                             
