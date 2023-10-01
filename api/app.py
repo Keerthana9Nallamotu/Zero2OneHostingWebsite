@@ -15,6 +15,7 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
 Session(app)
 
 bcrypt = Bcrypt(app)
