@@ -101,7 +101,7 @@ def login():
             results = conn.execute(text(select_statement), values)
 
             for account in results:
-                print('DB Results:',account[0].User_password)
+                print('DB Results:',account[0])
                 print('HASHED: ', str(bcrypt.generate_password_hash(password))[1:])
                 if account:
                     print(account)
