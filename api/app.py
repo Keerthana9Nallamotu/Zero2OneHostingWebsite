@@ -26,11 +26,11 @@ bcrypt = Bcrypt(app)
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 
-session['loggedin'] = False
-session['email_address'] = ""
-session['ATTENDANCE_SUBMITTED'] = False
-session['ASSIGNMENT_SUBMITTED'] = False
-session['ASSIGNMENT_LINK'] = ""
+# session['loggedin'] = False
+# session['email_address'] = ""
+# session['ATTENDANCE_SUBMITTED'] = False
+# session['ASSIGNMENT_SUBMITTED'] = False
+# session['ASSIGNMENT_LINK'] = ""
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
