@@ -50,8 +50,8 @@ def dashboard():
     # TODO REDIRECT TO LOGIN IF SESSION = FALSE
 
     if not session or (session and session.get("email_address")==""):
-        # if not session:
-        print("Not logged in")
+        if not session:
+            print("Not logged in")
         return redirect(url_for('login'))
 
     if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
