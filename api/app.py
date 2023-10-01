@@ -6,8 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc, text
 import sqlalchemy
 import os
+from flask_session import Session
 
 app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 bcrypt = Bcrypt(app)
 
@@ -18,17 +22,24 @@ app.config['SECRET_KEY'] = SECRET_KEY
 
 db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
+
+# session['loggedin'] = False
+# session['email_address'] = ""
+# session['ATTENDANCE_SUBMITTED'] = False
+# session['ASSIGNMENT_SUBMITTED'] = False
+# session['ASSIGNMENT_LINK'] = ""
+
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
 CORRECT_WEEKLY_CODE = "Siebel"
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
-    #TODO: REPLACE WITH LISTS
-    session['ATTENDANCE_SUBMITTED'] = False
-    session['ASSIGNMENT_SUBMITTED'] = False
+    # #TODO: REPLACE WITH LISTS
+    # session['ATTENDANCE_SUBMITTED'] = False
+    # session['ASSIGNMENT_SUBMITTED'] = False
 
-    session['loggedin'] = False
+    # session['loggedin'] = False
     return render_template('index.html')
 
 @app.route('/dashboard.html', methods = ['GET', 'POST'])
