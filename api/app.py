@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import create_engine, exc, text
 import sqlalchemy
 import os
+from flask_login import current_user
 
 app = Flask(__name__)
 
@@ -14,9 +15,9 @@ bcrypt = Bcrypt(app)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
-db = create_engine('mysql+pymysql://root:kish0819@127.0.0.1:3306/zero2onewebsite')
+# db = create_engine('mysql+pymysql://root:kish0819@127.0.0.1:3306/zero2onewebsite')
 
-db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
+# db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us-east-1.postgres.vercel-storage.com:5432/verceldb", isolation_level="AUTOCOMMIT")
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 1
@@ -101,16 +102,18 @@ def login():
             results = conn.execute(text(select_statement), values)
 
             for account in results:
-                print('DB Results:',account['User_password'])
+                print('DB Results:')
+                print(type(account))
+                print(account[0])
                 print('HASHED: ', str(bcrypt.generate_password_hash(password))[1:])
                 if account:
                     print(account)
-                    if bcrypt.check_password_hash(account['User_password'], password):
-                        print('parse: ', parser.parse(account['activation_date']))
+                    if bcrypt.check_password_hash(account[0], password):
+                        print('parse: ', parser.parse(account[1]))
 
                         session['loggedin'] = True
                         # session['id'] = account['username']
-                        session['email_address'] = account['email_address']
+                        session['email_address'] = account[0]
 
                         #TODO: REPLACE WITH LISTS
                         session['ATTENDANCE_SUBMITTED'] = False
