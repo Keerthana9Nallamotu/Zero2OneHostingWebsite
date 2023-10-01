@@ -132,6 +132,12 @@ def login():
                         session['ATTENDANCE_SUBMITTED'] = False
                         session['ASSIGNMENT_SUBMITTED'] = False
                         session['ASSIGNMENT_LINK'] = ""
+
+                        print("LOGGEDIN: ", session['loggedin'])
+                        print("EMAIL: ", session['email_address'])
+                        print("ATT: ", session['ATTENDANCE_SUBMITTED'])
+                        print("ASSIGN: ", session['ASSIGNMENT_SUBMITTED'])
+                        print("LINK: ", session['ASSIGNMENT_LINK'])
                         
                         return redirect(url_for('dashboard'))
                 else:
