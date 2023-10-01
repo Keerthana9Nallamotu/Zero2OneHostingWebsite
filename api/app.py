@@ -105,12 +105,12 @@ def login():
                 print('HASHED: ', str(bcrypt.generate_password_hash(password))[1:])
                 if account:
                     print(account)
-                    if bcrypt.check_password_hash(account[0].User_password, password):
-                        print('parse: ', parser.parse(account[0].activation_date))
+                    if bcrypt.check_password_hash(account[2], password):
+                        print('parse: ', parser.parse(account[1]))
 
                         session['loggedin'] = True
                         # session['id'] = account['username']
-                        session['email_address'] = account[0].email_address
+                        session['email_address'] = account[0]
 
                         #TODO: REPLACE WITH LISTS
                         session['ATTENDANCE_SUBMITTED'] = False
