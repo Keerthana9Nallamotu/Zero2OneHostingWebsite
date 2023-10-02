@@ -36,7 +36,7 @@ db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 2
-CORRECT_WEEKLY_CODE = "Siebel"
+CORRECT_WEEKLY_CODE = "problematic"
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
@@ -93,7 +93,7 @@ def dashboard(user):
             worksheet_link = request.form['worksheet_link']
             
             with db.connect() as conn:
-                update_statement = "UPDATE assignments SET Workshop_2 = :worksheet_link WHERE email_address = :email_address;"
+                update_statement = "UPDATE assignments SET Workshop_1 = :worksheet_link WHERE email_address = :email_address;"
                 values = {'worksheet_link': worksheet_link,'email_address': user}
                 conn.execute(text(update_statement), values)
 
