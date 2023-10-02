@@ -12,6 +12,8 @@ app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 
+# user = ""
+
 # app.config["SESSION_PERMANENT"] = False
 # app.config["SESSION_TYPE"] = "filesystem"
 # app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
@@ -33,33 +35,20 @@ db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us
 # session['ASSIGNMENT_LINK'] = []
 
 #TODO: REPLACE HARDCODING
-WEEK_NUM = 1
+WEEK_NUM = 2
 CORRECT_WEEKLY_CODE = "Siebel"
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
-    # #TODO: REPLACE WITH LISTS
-    # session['ATTENDANCE_SUBMITTED'] = False
-    # session['ASSIGNMENT_SUBMITTED'] = False
-
-    # session['loggedin'] = False
     return render_template('index.html')
 
-@app.route('/dashboard.html', methods = ['GET', 'POST'])
-def dashboard():
-    # TODO REDIRECT TO LOGIN IF SESSION = FALSE
-
-    # print(user)
-
-    if not session or (session and session.get("email_address")==""):
-        if not session:
-            print("Not logged in")
-        return redirect(url_for('login'))
+@app.route('/dashboard/<user>', methods = ['GET', 'POST'])
+def dashboard(user):
     
     with db.connect() as conn:
     
         select_statement2 = "SELECT * FROM attendance WHERE email_address = :email_address"
-        values2 = {'email_address': session.get("email_address")}
+        values2 = {'email_address': user}
         user_attendance = []
                             
         results2 = conn.execute(text(select_statement2), values2)
@@ -67,13 +56,14 @@ def dashboard():
             user_attendance = [int(acc2[1]), int(acc2[2]), int(acc2[3]), int(acc2[4]), int(acc2[5]), int(acc2[6]), int(acc2[7]), int(acc2[8])]
 
         select_statement3 = "SELECT * FROM assignments WHERE email_address = :email_address"
-        values3 = {'email_address': session.get("email_address")}
+        values3 = {'email_address': user}
         user_assignments = []
                             
         results3 = conn.execute(text(select_statement3), values3)
         for acc3 in results3:
             user_assignments = [acc3[1], acc3[2], acc3[3], acc3[4], acc3[5], acc3[6], acc3[7], acc3[8]]
-
+        
+        # session['email_address'] = session.get("email_address")
 
         if request.method == 'POST' and 'code' in request.form and 'workshop_num' in request.form:
             code = request.form['code']
@@ -82,25 +72,25 @@ def dashboard():
             if code != CORRECT_WEEKLY_CODE:
                 msg = "Incorrect Code Inputted - Please Try Again"
                 #TODO ERROR HANDLING
-                return render_template('dashboard.html', msg=msg, week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments)
+                return render_template('dashboard.html', msg=msg, week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
 
             #TODO MAKE WORKSHOP NUMBER A VAR
-            update_statement = "UPDATE attendance SET Workshop_1 = :update_num WHERE email_address = :email_address;"
-            values = {'update_num': "1", 'email_address': session['email_address']}
+            update_statement = "UPDATE attendance SET Workshop_2 = :update_num WHERE email_address = :email_address;"
+            values = {'update_num': "1", 'email_address': user}
                 
             print(f"UPDATE: {update_statement}")
             conn.execute(text(update_statement), values)
 
             user_attendance[WEEK_NUM-1] = 1
 
-            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments)
+            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
             
         elif request.method == 'POST' and 'worksheet_link' in request.form:
             worksheet_link = request.form['worksheet_link']
             
             with db.connect() as conn:
-                update_statement = "UPDATE assignments SET Workshop_1 = :worksheet_link WHERE email_address = :email_address;"
-                values = {'worksheet_link': worksheet_link,'email_address': session['email_address']}
+                update_statement = "UPDATE assignments SET Workshop_2 = :worksheet_link WHERE email_address = :email_address;"
+                values = {'worksheet_link': worksheet_link,'email_address': user}
                 conn.execute(text(update_statement), values)
 
                 user_assignments[WEEK_NUM-1] = worksheet_link
@@ -108,10 +98,10 @@ def dashboard():
                 # session['ASSIGNMENT_SUBMITTED'] = True
                 # session['ASSIGNMENT_LINK'] = worksheet_link
 
-                return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments)
+                return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
         
     print(session.get("email_address"))
-    return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = False, assign_sub = False, assign_link = False)
+    return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
 
 @app.route('/login.html', methods = ['GET', 'POST'])
 def login():
@@ -146,7 +136,7 @@ def login():
 
                         # session['loggedin'] = True
                         # session['id'] = account['username']
-                        session['email_address'] = account[0]
+                        # session['email_address'] = account[0]
 
                         #TODO: REPLACE WITH LISTS
                         # session['ATTENDANCE_SUBMITTED'] = False
@@ -154,7 +144,7 @@ def login():
                         # session['ASSIGNMENT_LINK'] = ""
 
                         # print("LOGGEDIN: ", session['loggedin'])
-                        print("EMAIL: ", session['email_address'])
+                        # print("EMAIL: ", session['email_address'])
                         # print("ATT: ", session['ATTENDANCE_SUBMITTED'])
                         # print("ASSIGN: ", session['ASSIGNMENT_SUBMITTED'])
                         # print("LINK: ", session['ASSIGNMENT_LINK'])
@@ -174,16 +164,17 @@ def login():
                         results3 = conn.execute(text(select_statement3), values3)
                         for acc3 in results3:
                             user_assignments = [acc3[1], acc3[2], acc3[3], acc3[4], acc3[5], acc3[6], acc3[7], acc3[8]]
-
                         
-                        return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments)
-
+                        return redirect(url_for('dashboard', user=email))
+                        # return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments)
+                        
                 else:
                     msg = 'Incorrect username/password!'
                     print(msg)
                     return render_template('login.html', msg=msg)
     else:
         print("Not entering funct")          
+        return render_template('login.html', msg="")
     return render_template('login.html', msg=msg)
 
 
@@ -248,7 +239,7 @@ def register():
 
             # session['loggedin'] = True
             # session['id'] = username
-            session['email_address'] = email
+            # session['email_address'] = email
 
             #TODO: REPLACE WITH LISTS
             # session['ATTENDANCE_SUBMITTED'] = False
@@ -257,7 +248,7 @@ def register():
 
             print(email)
                             
-            return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = [0,0,0,0,0,0,0,0], assign_link = ["","","","","","","",""])
+            return redirect(url_for('dashboard', user=email))
         
     return render_template('register.html', msg='')
 
