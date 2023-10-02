@@ -81,6 +81,8 @@ def dashboard(user):
             print(f"UPDATE: {update_statement}")
             conn.execute(text(update_statement), values)
 
+            print(user)
+            print(user_attendance)
             user_attendance[WEEK_NUM-1] = 1
 
             return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
@@ -99,7 +101,9 @@ def dashboard(user):
                 # session['ASSIGNMENT_LINK'] = worksheet_link
 
                 return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
-        
+        # else:
+        #     print(user_attendance)
+        #     return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
     print(session.get("email_address"))
     return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
 
