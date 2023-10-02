@@ -44,6 +44,8 @@ def home():
 
 @app.route('/dashboard/<user>', methods = ['GET', 'POST'])
 def dashboard(user):
+
+    user = user.split("%")[0]+"@gmail.com"
     
     with db.connect() as conn:
     
