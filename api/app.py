@@ -97,7 +97,7 @@ def dashboard(user):
                 values = {'worksheet_link': worksheet_link,'email_address': user}
                 conn.execute(text(update_statement), values)
 
-                user_assignments[WEEK_NUM-1] = worksheet_link
+                user_assignments[0] = worksheet_link
 
                 # session['ASSIGNMENT_SUBMITTED'] = True
                 # session['ASSIGNMENT_LINK'] = worksheet_link
