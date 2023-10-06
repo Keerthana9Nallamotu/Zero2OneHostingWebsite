@@ -93,11 +93,11 @@ def dashboard(user):
             worksheet_link = request.form['worksheet_link']
             
             with db.connect() as conn:
-                update_statement = "UPDATE assignments SET Workshop_1 = :worksheet_link WHERE email_address = :email_address;"
+                update_statement = "UPDATE assignments SET Workshop_2 = :worksheet_link WHERE email_address = :email_address;"
                 values = {'worksheet_link': worksheet_link,'email_address': user}
                 conn.execute(text(update_statement), values)
 
-                user_assignments[0] = worksheet_link
+                user_assignments[WEEK_NUM-1] = worksheet_link
 
                 # session['ASSIGNMENT_SUBMITTED'] = True
                 # session['ASSIGNMENT_LINK'] = worksheet_link
