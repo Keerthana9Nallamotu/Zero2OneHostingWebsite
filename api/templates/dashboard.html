@@ -198,7 +198,7 @@
               <!-- <div class="more-button"></div> -->
             </div>
 
-            <div class="task-box yellow">
+            <div class="task-box green">
               <div class="description-task">
                 <div class="time">06:00 - 08:00 PM</div>
                 <div class="task-name">Workshop 2: Problem Statements</div>
@@ -207,6 +207,20 @@
                 {% endif %}
                 {% if assign_link[1] != "" %}  
                   <a href={{assign_link[1]}} target="_blank">Worksheet Submission</a>
+                {% endif %}
+              </div>
+              <!-- <div class="more-button"></div> -->
+            </div>
+
+            <div class="task-box blue">
+              <div class="description-task">
+                <div class="time">06:00 - 08:00 PM</div>
+                <div class="task-name">Workshop 3: Pain Points & Solutions</div>
+                {% if att_sub[2] %}
+                <a href="https://docs.google.com/presentation/d/1CAMMVmuGsCOJKhzjHszh4jBuEQnTGnX7X9luZ-M-U5A/edit?usp=sharing" target="_blank" style="padding-top: 5px;">Slides Link</a>
+                {% endif %}
+                {% if assign_link[2] != "" %}  
+                  <a href={{assign_link[2]}} target="_blank">Worksheet Submission</a>
                 {% endif %}
               </div>
               <!-- <div class="more-button"></div> -->

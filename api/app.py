@@ -36,7 +36,7 @@ db = create_engine("postgresql://default:n8GrzpUYN5Wi@ep-curly-water-29976642.us
 
 #TODO: REPLACE HARDCODING
 WEEK_NUM = 2
-CORRECT_WEEKLY_CODE = "problematic"
+CORRECT_WEEKLY_CODE = "october"
 
 @app.route('/', methods = ['GET', 'POST'])
 def home():
@@ -77,7 +77,7 @@ def dashboard(user):
                 return render_template('dashboard.html', msg=msg, week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
 
             #TODO MAKE WORKSHOP NUMBER A VAR
-            update_statement = "UPDATE attendance SET Workshop_2 = :update_num WHERE email_address = :email_address;"
+            update_statement = "UPDATE attendance SET Workshop_3 = :update_num WHERE email_address = :email_address;"
             values = {'update_num': "1", 'email_address': user}
                 
             print(f"UPDATE: {update_statement}")
@@ -85,7 +85,7 @@ def dashboard(user):
 
             print(user)
             print(user_attendance)
-            user_attendance[WEEK_NUM-1] = 1
+            user_attendance[2] = 1
 
             return render_template('dashboard.html', msg="", week_num = WEEK_NUM, att_sub = user_attendance, assign_link = user_assignments, email = user)
             
